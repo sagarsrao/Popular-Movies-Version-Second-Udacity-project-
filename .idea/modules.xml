@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://F:\PopularMovies\Popular-Movies-Stage-02.iml" filepath="F:\PopularMovies\Popular-Movies-Stage-02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Popular-Movies-Stage-02-master.iml" filepath="$PROJECT_DIR$/Popular-Movies-Stage-02-master.iml" />
+      <module fileurl="file://C:\Users\sagar\AndroidStudioProjects\Popular-Movies-Stage-02-master\Popular-Movies-Stage-02-master\PopularMovies.iml" filepath="C:\Users\sagar\AndroidStudioProjects\Popular-Movies-Stage-02-master\Popular-Movies-Stage-02-master\PopularMovies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
