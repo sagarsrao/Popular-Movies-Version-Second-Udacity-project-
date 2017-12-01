@@ -40,7 +40,6 @@ import com.udacity.popmovies.networking.RetrofitClient;
 import com.udacity.popmovies.stetho.MyApplication;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +94,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     byte[] newByteArrayMovieImage;
 
 
+    private Parcelable recyclerViewState;
+
     int topView;
 
     private String movieTitle;
@@ -128,8 +129,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         mPosterImage = findViewById(R.id.iv_selected_movie_image);
         mTrailerView = findViewById(R.id.rv_trailers);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mLayoutManager.onSaveInstanceState();
-        mLayoutManager.onRestoreInstanceState(state);
+        //mLayoutManager.onSaveInstanceState();
+        //mLayoutManager.onRestoreInstanceState(state);
         mTrailerView.setLayoutManager(mLayoutManager);
         mScrollView = findViewById(R.id.scrollView_movie_details);
         trailersList = new ArrayList<>();
@@ -251,7 +252,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        currentVisiblePosition = ((LinearLayoutManager) mTrailerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        //currentVisiblePosition = ((LinearLayoutManager) mTrailerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
 
     }
 
@@ -259,8 +260,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        (mTrailerView.getLayoutManager()).scrollToPosition((int) currentVisiblePosition);
-        currentVisiblePosition = 0;
+     /*   (mTrailerView.getLayoutManager()).scrollToPosition((int) currentVisiblePosition);
+        currentVisiblePosition = 0;*/
 
     }
 
@@ -268,19 +269,23 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putIntArray("ARTICLE_SCROLL_POSITION",
-                new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()});
+        recyclerViewState = mTrailerView.getLayoutManager().onSaveInstanceState();
+
+        /*outState.putIntArray("ARTICLE_SCROLL_POSITION",
+                new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()});*/
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
+        mTrailerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+
+       /* final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
         if (position != null)
             mScrollView.post(new Runnable() {
                 public void run() {
                     mScrollView.scrollTo(position[0], position[1]);
                 }
-            });
+            });*/
     }
 
 
