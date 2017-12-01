@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.udacity.popmovies.constants.MovieConstants;
 
 /**
  * Created by sagar on 6/11/17.
@@ -111,21 +110,11 @@ public class MovieProvider extends ContentProvider {
         Uri returnUri;
         switch (sUriMatcher.match(uri)) {
             case MOVIE: {
-                //long _id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, contentValues);
 
                 insertOrUpdateById(db, MovieContract.MovieEntry.CONTENT_URI, MovieContract.MovieEntry.TABLE_NAME, contentValues, MovieContract.MovieEntry._ID);
                 getContext().getContentResolver().notifyChange(uri, null, false);
                 return MovieContract.MovieEntry.buildMoviesUri(contentValues.getAsString(MovieContract.MovieEntry._ID));
-                // insert unless it is already contained in the database
-                /*If the record is added successfully then we notify the content provider*/
-                /*if (_id > 0) {
-                    returnUri = MovieContract.MovieEntry.buildMoviesUri(_id);
-                } else {
-                    throw new android.database.SQLException("Failed to insert row into: " + uri);
-                }*/
-                //  break;
-                /*getContext().getContentResolver().notifyChange(uri, null, false);
-                return MovieContract.MovieEntry.buildMoviesUri(Long.parseLong(contentValues.getAsString(MovieContract.MovieEntry._ID)));*/
+
             }
 
             default: {

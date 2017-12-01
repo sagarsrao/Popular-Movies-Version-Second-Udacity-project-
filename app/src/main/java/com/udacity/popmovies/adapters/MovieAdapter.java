@@ -75,13 +75,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            movie_ImageView = (ImageView) itemView.findViewById(R.id.iv_movie);
-            m_id = (TextView) itemView.findViewById(R.id.tv_id);
-            mTitle = (TextView) itemView.findViewById(R.id.tv_title);
-            mOverView = (TextView) itemView.findViewById(R.id.tv_overView);
-            mVoteAverage = (TextView) itemView.findViewById(R.id.tv_vote_average);
-            mReleaseDate = (TextView) itemView.findViewById(R.id.tv_release_date);
-            mTopRatedOrPopularNameHolder = (TextView) itemView.findViewById(R.id.tv_pop_or_top_rated_holder);
+            movie_ImageView = itemView.findViewById(R.id.iv_movie);
+            m_id = itemView.findViewById(R.id.tv_id);
+            mTitle = itemView.findViewById(R.id.tv_title);
+            mOverView = itemView.findViewById(R.id.tv_overView);
+            mVoteAverage = itemView.findViewById(R.id.tv_vote_average);
+            mReleaseDate = itemView.findViewById(R.id.tv_release_date);
+            mTopRatedOrPopularNameHolder = itemView.findViewById(R.id.tv_pop_or_top_rated_holder);
 
         }
 

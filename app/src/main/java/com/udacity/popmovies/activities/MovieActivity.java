@@ -1,27 +1,18 @@
 package com.udacity.popmovies.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.udacity.popmovies.BuildConfig;
@@ -30,10 +21,7 @@ import com.udacity.popmovies.adapters.FavoriteMovieAdapter;
 import com.udacity.popmovies.adapters.MovieAdapter;
 import com.udacity.popmovies.adapters.OnItemClickListener;
 import com.udacity.popmovies.constants.DbBitmapUtility;
-import com.udacity.popmovies.constants.MovieConstants;
-import com.udacity.popmovies.constants.MovieEnum;
 import com.udacity.popmovies.database.MovieContract;
-import com.udacity.popmovies.models.FavoriteToggleStatus;
 import com.udacity.popmovies.models.Movie;
 import com.udacity.popmovies.models.ResponseFavoriteMovie;
 import com.udacity.popmovies.models.ResponseMovie;
@@ -73,13 +61,9 @@ public class MovieActivity extends AppCompatActivity {
 
     RecyclerView.LayoutManager mLayoutManager;
 
-    private StaggeredGridLayoutManager gaggeredGridLayoutManager;
 
-    private static final String BUNDLE_RECYCLER_LAYOUT = "classname.recycler.layout";
 
-    private SharedPreferences pref;
 
-    private SharedPreferences.Editor editor;
 
 
     List<Movie> movie;
@@ -89,17 +73,13 @@ public class MovieActivity extends AppCompatActivity {
     List<ResponseFavoriteMovie> responseFavoriteMovieList;
 
 
-    private SharedPreferences mSharedPreferences;
-
-    private SharedPreferences.Editor mEditor;
 
 
-    private byte[] favoriteMoviePath;
+
 
     private List<String> updateFavoritedMoviesPath = null;
 
 
-    private Parcelable recyclerViewState;
 
     List<String> favoriteMovieList;
 
@@ -114,15 +94,13 @@ public class MovieActivity extends AppCompatActivity {
 
     int topView;
 
+    private ScrollView mScrollView;
+
     ResponseFavoriteMovie responseFavoriteMovie;
 
-    int findFirstCompletelyVisibleItemPosition;
-    int firstVisiblePosition;
 
-    private MenuItem item;
 
-    private Menu menu;
-    private final String KEY_RECYCLER_STATE = "recycler_state";
+    private static final String KEY_RECYCLER_STATE = "recycler_state";
     private static Bundle mBundleRecyclerViewState;
 
 
@@ -131,16 +109,17 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+        mRecyclerView = findViewById(R.id.rv_movies);
         movie = new ArrayList<>();
         favoriteMovieList = new ArrayList<>();
-        favoriteMoviesListFromTheContentProvider = new ArrayList<String>();
+        favoriteMoviesListFromTheContentProvider = new ArrayList<>();
 
         updateFavoritedMoviesPath = new ArrayList<>();
         responseFavoriteMovieList = new ArrayList<>();
         favoriteToggleStatuses = new ArrayList<>();
+        mScrollView = findViewById(R.id.scrollView_movie_details);
         layoutManager = new GridLayoutManager(MovieActivity.this, numberOfColumns());
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new MovieAdapter(MyApplication.getAppContext(), movie, clickListener);
@@ -155,6 +134,13 @@ public class MovieActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             id = savedInstanceState.getInt("last_category_selected");
         }
+        final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
+        if (position != null)
+            mScrollView.post(new Runnable() {
+                public void run() {
+                    mScrollView.scrollTo(position[0], position[1]);
+                }
+            });
     }
 
 
@@ -170,6 +156,8 @@ public class MovieActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("last_category_selected", id);
+        outState.putIntArray("ARTICLE_SCROLL_POSITION",
+                new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()});
     }
 
     @Override
@@ -295,9 +283,9 @@ public class MovieActivity extends AppCompatActivity {
 
                     mFavoriteMovieAdapter.notifyDataSetChanged();
                 }
-
-
                 break;
+            default:
+
         }
         return false;
     }

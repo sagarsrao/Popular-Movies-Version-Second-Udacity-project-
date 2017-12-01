@@ -65,7 +65,7 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
         public ReviewHolder(View itemView) {
             super(itemView);
-            mUrl = (TextView) itemView.findViewById(R.id.info_text);
+            mUrl = itemView.findViewById(R.id.info_text);
 
 
         }

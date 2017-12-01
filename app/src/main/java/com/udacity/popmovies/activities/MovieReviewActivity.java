@@ -46,13 +46,12 @@ public class MovieReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_review);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.movie_review_recycler_view);
+        mRecyclerView = findViewById(R.id.movie_review_recycler_view);
         /*Make an API call to get the reviews*/
         reviewsList = new ArrayList<>();
         movieList = new ArrayList<>();
         RetrofitApiEndPoints apiEndPoints = RetrofitClient.getClient().create(RetrofitApiEndPoints.class);
 
-        //String _id = getIntent().getExtras().getString(MovieConstants.MOVIE_ID);
 
         Bundle extras = getIntent().getExtras();
         String value = null;

@@ -24,10 +24,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                     MovieContract.MovieEntry.MOVIE_TITLE + " TEXT)";
 
 
-    /*private static  final String SQL_CREATE_ENTRIES=
-            "create table"+ yourtablename (_id  integer primary key autoincrement, column1 text not null unique, column2 text);";*/
-    /*Changing from ALTER TO DROP SINCE DROP WILL WIPE YOU ALL THE DATABASE RECORDS AND THIS IS NOT GOOD DURING THE
-    * DATABASE UPGRADE*/
+
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME;
 

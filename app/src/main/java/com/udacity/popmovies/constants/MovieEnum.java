@@ -8,6 +8,6 @@ public enum MovieEnum {
 
     POPULARMOVIES,
     TOPRATEDMOVIES,
-    FAVORITEMOVIES;
+    FAVORITEMOVIES
 
 }

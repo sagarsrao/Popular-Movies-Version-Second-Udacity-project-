@@ -9,11 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.udacity.popmovies.R;
-import com.udacity.popmovies.constants.MovieConstants;
-import com.udacity.popmovies.models.Movie;
 
 import java.util.List;
 
@@ -73,8 +69,8 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
 
         public FavoriteMovieHolder(View itemView) {
             super(itemView);
-            mFavoriteTv = (TextView) itemView.findViewById(R.id.tv_favorite_movie);
-            mFavoriteIv = (ImageView) itemView.findViewById(R.id.iv_movie_favorite);
+            mFavoriteTv = itemView.findViewById(R.id.tv_favorite_movie);
+            mFavoriteIv = itemView.findViewById(R.id.iv_movie_favorite);
 
         }
     }

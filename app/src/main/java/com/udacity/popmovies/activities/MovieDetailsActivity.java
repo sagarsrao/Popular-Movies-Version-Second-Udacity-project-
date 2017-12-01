@@ -2,16 +2,12 @@ package com.udacity.popmovies.activities;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -19,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.widget.CompoundButton;
@@ -38,7 +33,6 @@ import com.udacity.popmovies.constants.MovieConstants;
 import com.udacity.popmovies.database.MovieContract;
 import com.udacity.popmovies.database.MovieDbHelper;
 
-import com.udacity.popmovies.database.MovieProvider;
 import com.udacity.popmovies.models.TrailerResponse;
 import com.udacity.popmovies.models.Trailers;
 import com.udacity.popmovies.networking.RetrofitApiEndPoints;
@@ -46,9 +40,7 @@ import com.udacity.popmovies.networking.RetrofitClient;
 import com.udacity.popmovies.stetho.MyApplication;
 
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +94,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     byte[] newByteArrayMovieImage;
 
-    private int positionIndex;
 
     int topView;
 
@@ -123,44 +114,34 @@ public class MovieDetailsActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setTitle(getString(R.string.toolbar_title));
         myToolbar.setTitleTextColor(Color.WHITE);
         myToolbar.setBackgroundResource(R.color.colorPrimary);
         myToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
         setSupportActionBar(myToolbar);
 
-        mTitle = (TextView) findViewById(R.id.tv_movieTitle);
-        mVoteAverage = (TextView) findViewById(R.id.tv_movie_VoteAverage);
-        mReleaseDate = (TextView) findViewById(R.id.tv_movie_ReleaseDate);
-        mOverView = (TextView) findViewById(R.id.tv_movie_overView);
-        mPosterImage = (ImageView) findViewById(R.id.iv_selected_movie_image);
-        mTrailerView = (RecyclerView) findViewById(R.id.rv_trailers);
+        mTitle = findViewById(R.id.tv_movieTitle);
+        mVoteAverage = findViewById(R.id.tv_movie_VoteAverage);
+        mReleaseDate = findViewById(R.id.tv_movie_ReleaseDate);
+        mOverView = findViewById(R.id.tv_movie_overView);
+        mPosterImage = findViewById(R.id.iv_selected_movie_image);
+        mTrailerView = findViewById(R.id.rv_trailers);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.onSaveInstanceState();
         mLayoutManager.onRestoreInstanceState(state);
         mTrailerView.setLayoutManager(mLayoutManager);
-        mScrollView = (ScrollView) findViewById(R.id.scrollView_movie_details);
+        mScrollView = findViewById(R.id.scrollView_movie_details);
         trailersList = new ArrayList<>();
-        mToggleButton = (ToggleButton) findViewById(R.id.toggleMovie);
+        mToggleButton = findViewById(R.id.toggleMovie);
         mToggleButton.setTextOff(textOff);
         movieDbHelper = new MovieDbHelper(MovieDetailsActivity.this);
-        mMovieReviewLink = (TextView) findViewById(R.id.tv_movie_review_link);
+        mMovieReviewLink = findViewById(R.id.tv_movie_review_link);
         movieTitle = getIntent().getExtras().getString(MovieConstants.MOVIE_TITLE);
         movieId = getIntent().getExtras().getString(MovieConstants.MOVIE_ID);
         movieImage = getIntent().getExtras().getString(MovieConstants.MOVIE_POSTER_VIEWS); //you are simply taking it from the bundle
         moviePosterPath = MovieConstants.MOVIE_IMAGE_URL + getIntent().getExtras().getString(MovieConstants.MOVIE_POSTER_VIEWS);
-        //Uri uri = Uri.parse(moviePosterPath);
-        //InputStream iStream = null;
-        /*try {
-            iStream = getContentResolver().openInputStream(uri);
-            inputData = DbBitmapUtility.getBytesNew(iStream);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         mMovieReviewLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,7 +196,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MovieDetailsActivity.this, MovieActivity.class));
+                finish();
             }
         });
 
@@ -269,10 +250,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        /*positionIndex= ((LinearLayoutManager)mTrailerView.getLayoutManager()).findFirstVisibleItemPosition();
 
-        View startView = mTrailerView.getChildAt(0);
-        topView = (startView == null) ? 0 : (startView.getTop() - mTrailerView.getPaddingTop());*/
         currentVisiblePosition = ((LinearLayoutManager) mTrailerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
 
     }
@@ -281,10 +259,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-      /*if(positionIndex !=-1){
-
-          mLayoutManager.smoothScrollToPosition(mTrailerView,null,topView);
-      }*/
         (mTrailerView.getLayoutManager()).scrollToPosition((int) currentVisiblePosition);
         currentVisiblePosition = 0;
 

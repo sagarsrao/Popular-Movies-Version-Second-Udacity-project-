@@ -1,15 +1,14 @@
 package com.udacity.popmovies.constants;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Logger;
 
 /**
  * Created by sagarsrao on 18-11-2017.
@@ -39,7 +38,7 @@ public class DbBitmapUtility {
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(e.getMessage());
             return null;
         }
     }
