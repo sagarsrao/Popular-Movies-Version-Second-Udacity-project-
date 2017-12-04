@@ -132,7 +132,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         //mLayoutManager.onSaveInstanceState();
         //mLayoutManager.onRestoreInstanceState(state);
         mTrailerView.setLayoutManager(mLayoutManager);
-        mScrollView = findViewById(R.id.scrollView_movie_details);
+        //mScrollView = findViewById(R.id.scrollView_movie_details);
         trailersList = new ArrayList<>();
         mToggleButton = findViewById(R.id.toggleMovie);
         mToggleButton.setTextOff(textOff);

@@ -65,8 +65,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView movie_ImageView;
-        TextView m_id;
+        ImageView mPosterImage;
+        TextView mMovieId;
         TextView mTitle;
         TextView mOverView;
         TextView mVoteAverage;
@@ -75,8 +75,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            movie_ImageView = itemView.findViewById(R.id.iv_movie);
-            m_id = itemView.findViewById(R.id.tv_id);
+            mPosterImage = itemView.findViewById(R.id.iv_movie);
+            mMovieId = itemView.findViewById(R.id.tv_id);
             mTitle = itemView.findViewById(R.id.tv_title);
             mOverView = itemView.findViewById(R.id.tv_overView);
             mVoteAverage = itemView.findViewById(R.id.tv_vote_average);
@@ -91,8 +91,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 String posterPath = MovieConstants.MOVIE_IMAGE_URL + movie.getPoster_path();
                 Glide.with(mContext)
                         .load(posterPath)
-                        .into(movie_ImageView);
-                m_id.setText(movie.get_id());
+                        .into(mPosterImage);
+                mMovieId.setText(movie.get_id());
                 mTitle.setText(movie.getTitle());
                 mReleaseDate.setText(movie.getRelease_date());
                 mOverView.setText(movie.getOverview());

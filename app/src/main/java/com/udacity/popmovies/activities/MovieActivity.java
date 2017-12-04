@@ -62,8 +62,7 @@ public class MovieActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
 
 
-
-
+    private Parcelable savedInstance;
 
 
     List<Movie> movie;
@@ -73,12 +72,7 @@ public class MovieActivity extends AppCompatActivity {
     List<ResponseFavoriteMovie> responseFavoriteMovieList;
 
 
-
-
-
-
     private List<String> updateFavoritedMoviesPath = null;
-
 
 
     List<String> favoriteMovieList;
@@ -97,7 +91,6 @@ public class MovieActivity extends AppCompatActivity {
     private ScrollView mScrollView;
 
     ResponseFavoriteMovie responseFavoriteMovie;
-
 
 
     private static final String KEY_RECYCLER_STATE = "recycler_state";
@@ -134,13 +127,19 @@ public class MovieActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             id = savedInstanceState.getInt("last_category_selected");
         }
-        final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
-        if (position != null)
+       // final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
+        /*if (position != null)
             mScrollView.post(new Runnable() {
                 public void run() {
                     mScrollView.scrollTo(position[0], position[1]);
                 }
-            });
+            });*/
+        if (savedInstanceState != null) {
+            id = savedInstanceState.getInt("last_category_selected");
+        }
+
+        // YOU CAN ADD THIS LINE TO RESTORE THE LAYOUT MANAGER STATE
+        savedInstance = savedInstanceState.getParcelable("myState");
     }
 
 
@@ -156,8 +155,10 @@ public class MovieActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("last_category_selected", id);
-        outState.putIntArray("ARTICLE_SCROLL_POSITION",
-                new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()});
+        /*outState.putIntArray("ARTICLE_SCROLL_POSITION",
+                new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()});*/
+        outState.putParcelable("myState", layoutManager.onSaveInstanceState());
+
     }
 
     @Override
@@ -192,6 +193,8 @@ public class MovieActivity extends AppCompatActivity {
                             Log.d(TAG, "onResponse: " + statusCode);
                             movie = response.body().getResults();
 
+                            // This line was include to restore layout manager state after movies API returns.
+                            layoutManager.onRestoreInstanceState(savedInstance);
                             mRecyclerView.setLayoutManager(layoutManager);
                             mAdapter = new MovieAdapter(MyApplication.getAppContext(), movie, clickListener);
 

@@ -43,14 +43,8 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
 
     @Override
     public void onBindViewHolder(FavoriteMovieAdapter.FavoriteMovieHolder holder, int position) {
-
-
         holder.mFavoriteTv.append(movieNamesList.get(position));
-
-
         holder.mFavoriteIv.setImageBitmap(moviePosterPath.get(position));
-
-
     }
 
     @Override
