@@ -126,20 +126,11 @@ public class MovieActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
             id = savedInstanceState.getInt("last_category_selected");
-        }
-       // final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
-        /*if (position != null)
-            mScrollView.post(new Runnable() {
-                public void run() {
-                    mScrollView.scrollTo(position[0], position[1]);
-                }
-            });*/
-        if (savedInstanceState != null) {
-            id = savedInstanceState.getInt("last_category_selected");
+            savedInstance = savedInstanceState.getParcelable("myState");
+
         }
 
-        // YOU CAN ADD THIS LINE TO RESTORE THE LAYOUT MANAGER STATE
-        savedInstance = savedInstanceState.getParcelable("myState");
+
     }
 
 
@@ -155,8 +146,6 @@ public class MovieActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("last_category_selected", id);
-        /*outState.putIntArray("ARTICLE_SCROLL_POSITION",
-                new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()});*/
         outState.putParcelable("myState", layoutManager.onSaveInstanceState());
 
     }
