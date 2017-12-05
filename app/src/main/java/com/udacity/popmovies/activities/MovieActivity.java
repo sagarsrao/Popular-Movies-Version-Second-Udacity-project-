@@ -47,52 +47,20 @@ import static com.udacity.popmovies.database.MovieContract.MovieEntry.MOVIE_IMAG
 public class MovieActivity extends AppCompatActivity {
 
     public static final String TAG = MovieActivity.class.getSimpleName();
-
-
     private RecyclerView mRecyclerView;
-
     MovieAdapter mAdapter;
-
-    long currentVisiblePosition = 0;
-
     private int id = 0;
-
     FavoriteMovieAdapter mFavoriteMovieAdapter;
-
-    RecyclerView.LayoutManager mLayoutManager;
-
-
     private Parcelable savedInstance;
-
-
     List<Movie> movie;
-
     List<String> favoriteMoviesListFromTheContentProvider;
-
     List<ResponseFavoriteMovie> responseFavoriteMovieList;
-
-
     private List<String> updateFavoritedMoviesPath = null;
-
-
     List<String> favoriteMovieList;
-
     List<Bitmap> favoriteToggleStatuses;
-
     OnItemClickListener clickListener;
-
     Cursor mCursor;
     GridLayoutManager layoutManager;
-
-    int positionIndex;
-
-    int topView;
-
-    private ScrollView mScrollView;
-
-    ResponseFavoriteMovie responseFavoriteMovie;
-
-
     private static final String KEY_RECYCLER_STATE = "recycler_state";
     private static Bundle mBundleRecyclerViewState;
 
@@ -112,7 +80,6 @@ public class MovieActivity extends AppCompatActivity {
         updateFavoritedMoviesPath = new ArrayList<>();
         responseFavoriteMovieList = new ArrayList<>();
         favoriteToggleStatuses = new ArrayList<>();
-        mScrollView = findViewById(R.id.scrollView_movie_details);
         layoutManager = new GridLayoutManager(MovieActivity.this, numberOfColumns());
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new MovieAdapter(MyApplication.getAppContext(), movie, clickListener);
@@ -126,6 +93,9 @@ public class MovieActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
             id = savedInstanceState.getInt("last_category_selected");
+
+        }
+        if (savedInstance != null) {
             savedInstance = savedInstanceState.getParcelable("myState");
 
         }
@@ -146,7 +116,8 @@ public class MovieActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("last_category_selected", id);
-        outState.putParcelable("myState", layoutManager.onSaveInstanceState());
+        savedInstance = layoutManager.onSaveInstanceState();
+        outState.putParcelable("myState", savedInstance);// KEY AND VALUE PAIR
 
     }
 
@@ -183,7 +154,7 @@ public class MovieActivity extends AppCompatActivity {
                             movie = response.body().getResults();
 
                             // This line was include to restore layout manager state after movies API returns.
-                            layoutManager.onRestoreInstanceState(savedInstance);
+                            // layoutManager.onRestoreInstanceState(savedInstance);
                             mRecyclerView.setLayoutManager(layoutManager);
                             mAdapter = new MovieAdapter(MyApplication.getAppContext(), movie, clickListener);
 
@@ -296,12 +267,14 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // restore RecyclerView state
+        populateMovies();
         if (mBundleRecyclerViewState != null) {
             Parcelable listState = mBundleRecyclerViewState.getParcelable(KEY_RECYCLER_STATE);
             mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
         }
-        populateMovies();
+        if (savedInstance != null) {
+            layoutManager.onRestoreInstanceState(savedInstance);
+        }
 
     }
 
@@ -314,6 +287,7 @@ public class MovieActivity extends AppCompatActivity {
         mBundleRecyclerViewState = new Bundle();
         Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         mBundleRecyclerViewState.putParcelable(KEY_RECYCLER_STATE, listState);
+
     }
 
 
