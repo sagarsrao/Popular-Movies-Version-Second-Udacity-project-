@@ -61,8 +61,9 @@ public class MovieActivity extends AppCompatActivity {
     OnItemClickListener clickListener;
     Cursor mCursor;
     GridLayoutManager layoutManager;
-    private static final String KEY_RECYCLER_STATE = "recycler_state";
+    public final static String LIST_STATE_KEY = "recycler_list_state";
     private static Bundle mBundleRecyclerViewState;
+    Parcelable listState;
 
 
     @Override
@@ -95,10 +96,12 @@ public class MovieActivity extends AppCompatActivity {
             id = savedInstanceState.getInt("last_category_selected");
 
         }
-        if (savedInstance != null) {
+       /* if (savedInstance != null) {
             savedInstance = savedInstanceState.getParcelable("myState");
 
-        }
+        }*/
+        if (savedInstanceState != null)
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
 
 
     }
@@ -116,9 +119,12 @@ public class MovieActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("last_category_selected", id);
-        savedInstance = layoutManager.onSaveInstanceState();
+        /*savedInstance = layoutManager.onSaveInstanceState();
         outState.putParcelable("myState", savedInstance);// KEY AND VALUE PAIR
-
+*/
+        // Save list state
+        listState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, listState);
     }
 
     @Override
@@ -268,13 +274,16 @@ public class MovieActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         populateMovies();
-        if (mBundleRecyclerViewState != null) {
+        /*if (mBundleRecyclerViewState != null) {
             Parcelable listState = mBundleRecyclerViewState.getParcelable(KEY_RECYCLER_STATE);
             mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+        }*/
+        if (listState != null) {
+            layoutManager.onRestoreInstanceState(listState);
         }
-        if (savedInstance != null) {
+        /*if (savedInstance != null) {
             layoutManager.onRestoreInstanceState(savedInstance);
-        }
+        }*/
 
     }
 
@@ -284,9 +293,10 @@ public class MovieActivity extends AppCompatActivity {
         super.onPause();
 
         // save RecyclerView state
-        mBundleRecyclerViewState = new Bundle();
+        /*mBundleRecyclerViewState = new Bundle();
         Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
-        mBundleRecyclerViewState.putParcelable(KEY_RECYCLER_STATE, listState);
+        mBundleRecyclerViewState.putParcelable(KEY_RECYCLER_STATE, listState)*/
+        ;
 
     }
 
